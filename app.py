@@ -57,7 +57,6 @@ with st.sidebar:
         st.markdown("---")
         st.caption("🧠 BREIN")
         
-        # HIER IS DE FIX: GPT-5 BOVENAAN
         model_options = ["gpt-5", "gpt-5-mini", "gpt-4o", "gpt-4o-mini", "Custom"]
         selected_option = st.selectbox("Kies Model", model_options)
         
@@ -80,7 +79,6 @@ Zorg dat de JSON syntactisch perfect is. Geen markdown (```json) eromheen, allee
 
     if api_key_input: openai.api_key = api_key_input
     
-    # HIER PAKKEN WE DE STRING DIRECT
     if selected_option == "Custom":
         real_model = custom_model
     else:
@@ -126,29 +124,13 @@ for msg in st.session_state.messages:
         else:
              st.markdown(msg["content"])
 
-if prompt := st.chat_input("Opdracht voor deployment..."):
+# HIER ZAT HET PROBLEEM: ER MAG ER MAAR 1 ZIJN. DEZE IS UNIEK.
+if prompt := st.chat_input("Opdracht voor deployment...", key="primary_chat_input"):
     st.session_state.messages.append({"role": "user", "content": prompt})
     with st.chat_message("user"): st.markdown(prompt)
 
     with st.chat_message("assistant"):
         if not api_key_input: st.error("Geen API Key!"); st.stop()
-        try:
-            stream = openai.chat.completions.create(
-                model=real_model,
-                messages=[{"role": "system", "content": persona_input}, *st.session_state.messages],
-                stream=True
-            )
-            response = st.write_stream(stream)
-            st.session_state.messages.append({"role": "assistant", "content": response})
-        except Exception as e: st.error(f"Error: {e}")
-
-if prompt := st.chat_input("Opdracht voor deployment..."):
-    st.session_state.messages.append({"role": "user", "content": prompt})
-    with st.chat_message("user"): st.markdown(prompt)
-
-    with st.chat_message("assistant"):
-        if not api_key_input: st.error("Geen API Key!"); st.stop()
-        # (Optioneel: RAG logica hier toevoegen, voor nu even puur deployment focus)
         try:
             stream = openai.chat.completions.create(
                 model=real_model,
