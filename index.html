@@ -1,78 +1,52 @@
 <!doctype html>
-<html lang='nl'>
+<html lang="nl">
 <head>
-  <meta charset='utf-8'>
-  <meta name='viewport' content='width=device-width,initial-scale=1'>
-  <title>Master Build</title>
-  <link rel='stylesheet' href='style.css'>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Chat – Matrix Glass</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
-<body class='theme-glass'>
-  <header class='app-header'>
-    <div class='left'>
-      <h1 id='app-title'>Master Build <span id='app-status'>— Ready</span></h1>
-    </div>
-    <div class='right'>
-      <button id='theme-btn' class='icon-btn' title='Toggle Theme'>👁️‍🗨️ Theme</button>
-      <button id='clear-btn' class='icon-btn' title='Clear Chat'>🗑️ Wis</button>
-      <button id='config-btn' class='icon-btn' title='Settings'>⚙️ Config</button>
+<body>
+  <header class="topbar">
+    <div class="brand">Aphex Chat</div>
+    <div class="actions">
+      <button id="openSettingsBtn" class="btn">Instellingen</button>
     </div>
   </header>
 
-  <main class='app-main'>
-    <div id='chat' class='chat-area' aria-live='polite'></div>
+  <main class="container">
+    <section id="chat" class="chat">
+      <div id="messages" class="messages" aria-live="polite"></div>
+      <form id="composer" class="composer" autocomplete="off">
+        <input id="messageInput" type="text" placeholder="Typ een bericht..." />
+        <button id="sendBtn" class="btn primary" type="submit">Verstuur</button>
+      </form>
+    </section>
   </main>
 
-  <footer id='input-area' class='input-area'>
-    <textarea id='user-input' class='user-input' placeholder='Typ je bericht... (Shift+Enter voor nieuwe regel)' rows='1'></textarea>
-    <div class='input-actions'>
-      <button id='send-btn' class='primary'>Verzend</button>
-      <button id='stop-btn' class='stop hidden'>Stop</button>
-    </div>
-  </footer>
+  <!-- Settings Modal -->
+  <div id="settingsModal" class="modal" aria-hidden="true">
+    <div class="modal-backdrop" id="modalBackdrop"></div>
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <header class="modal-header">
+        <h2 id="modalTitle">Instellingen</h2>
+      </header>
+      <div class="modal-body">
+        <label for="openaiKey">OpenAI API Key</label>
+        <input id="openaiKey" type="password" placeholder="sk-..." />
 
-  <div id='settings-modal' class='modal hidden' role='dialog' aria-modal='true'>
-    <div class='modal-backdrop'></div>
-    <div class='modal-content'>
-      <h2>Instellingen</h2>
-      <div class='field'>
-        <label>OpenAI API Key
-          <input id='openai-key' type='password' placeholder='sk-...'>
-        </label>
+        <label for="githubToken">GitHub Token (optioneel)</label>
+        <input id="githubToken" type="password" placeholder="ghp_..." />
+
+        <p class="hint">Sla op om uw wijzigingen te bewaren. Er wordt geen verbinding getest bij opslaan.</p>
       </div>
-      <div class='field'>
-        <label>GitHub Token
-          <input id='github-token' type='password' placeholder='ghp_...'>
-        </label>
-      </div>
-      <div class='field'>
-        <label>Model selectie
-          <select id='model-select'>
-            <option value='gpt-4o'>gpt-4o</option>
-            <option value='gpt-4o-mini'>gpt-4o-mini</option>
-            <option value='gpt-5'>gpt-5</option>
-            <option value='gpt-5-mini'>gpt-5-mini</option>
-            <option value='o1-preview'>o1-preview</option>
-            <option value='custom'>custom</option>
-          </select>
-        </label>
-      </div>
-      <div class='field hidden' id='custom-model-wrap'>
-        <label>Custom model naam
-          <input id='custom-model' type='text' placeholder='vul je model id in'>
-        </label>
-      </div>
-      <div class='field'>
-        <label>Systeem Instructies
-          <textarea id='system-instructions' rows='6' placeholder='Persona / gedragsregels voor de AI'></textarea>
-        </label>
-      </div>
-      <div class='modal-actions'>
-        <button id='save-settings' class='primary'>Opslaan</button>
-        <button id='close-settings'>Sluiten</button>
-      </div>
+      <footer class="modal-footer">
+        <button id="saveSettingsBtn" class="btn primary">💾 Opslaan &amp; Sluiten</button>
+        <button id="cancelSettingsBtn" class="btn">Annuleren</button>
+      </footer>
     </div>
   </div>
 
-  <script src='script.js'></script>
+  <script src="script.js"></script>
 </body>
 </html>
