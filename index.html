@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Hybride Interface</title>
+  <!-- Tailwind for glass mode utility classes -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Fira Code for matrix/monospace mode -->
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="theme-matrix">
+  <div id="app" class="min-h-screen flex flex-col">
+    <header class="app-header flex items-center justify-between p-3">
+      <div class="flex items-center space-x-3">
+        <h1 class="app-title font-bold text-lg">Hybride Interface</h1>
+      </div>
+
+      <div class="flex items-center space-x-2">
+        <button id="settingsBtn" aria-label="Open settings" class="settings-btn p-2 rounded">⚙️</button>
+        <button id="switchThemeBtn" aria-label="Switch Theme" class="switch-btn p-2 rounded">👁️‍🗨️ Switch Theme</button>
+      </div>
+    </header>
+
+    <main class="flex-1 flex overflow-hidden">
+      <!-- Sidebar -->
+      <aside id="sidebar" class="sidebar w-72 border-r p-4 overflow-auto">
+        <div class="sidebar-inner">
+          <h2 class="mb-2">Menu</h2>
+          <ul class="menu-list">
+            <li>• Home</li>
+            <li>• Projects</li>
+            <li>• Logs</li>
+            <li>• Settings</li>
+          </ul>
+        </div>
+      </aside>
+
+      <!-- Chat area -->
+      <section class="flex-1 p-4 flex flex-col">
+        <div id="messages" class="messages flex-1 overflow-auto mb-4 p-3 rounded">
+          <!-- Chat messages appended here -->
+        </div>
+
+        <form id="chatForm" class="chat-form flex space-x-2" autocomplete="off">
+          <input id="messageInput" name="message" type="text" placeholder="Zeg iets..." class="message-input flex-1 p-3 rounded" />
+          <button type="submit" class="send-btn px-4 py-3 rounded">Send</button>
+        </form>
+      </section>
+    </main>
+  </div>
+
+  <!-- Settings Modal -->
+  <div id="settingsModal" class="settings-modal hidden" role="dialog" aria-modal="true">
+    <div class="modal-inner">
+      <h3>API Keys</h3>
+      <label for="openaiKeyInput">OpenAI Key</label>
+      <input id="openaiKeyInput" type="password" placeholder="sk-..." />
+
+      <label for="githubKeyInput">GitHub Key (optioneel)</label>
+      <input id="githubKeyInput" type="password" placeholder="ghp_..." />
+
+      <div class="modal-actions">
+        <button id="saveKeysBtn" class="save-btn">Save</button>
+        <button id="closeSettingsBtn" class="close-btn">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
