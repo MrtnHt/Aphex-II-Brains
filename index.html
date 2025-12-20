@@ -2,71 +2,95 @@
 <html lang="nl">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Master Build — Matrix/Glass Interface</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Aphex II AutoGPT</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body class="theme-glass">
   <header class="topbar">
-    <div class="brand">
-      <span class="logo-dot"></span>
-      <span class="brand-text">Master Build</span>
-      <span class="brand-sub">Matrix/Glass</span>
+    <div class="left">
+      <div class="brand">
+        <span class="dot" id="statusDot"></span>
+        <span class="title">Aphex II AutoGPT</span>
+        <span class="sep">•</span>
+        <span id="statusText">Ready</span>
+      </div>
     </div>
-    <div class="actions">
-      <button id="toggleTheme" class="icon-btn" title="Thema wisselen (Matrix/Glass)" aria-label="Thema wisselen">👁️‍🗨️</button>
-      <button id="clearChat" class="icon-btn" title="Prullenbak - Leeg chat" aria-label="Chat leegmaken">🗑️</button>
-      <button id="openSettings" class="icon-btn" title="Instellingen" aria-label="Instellingen">⚙️</button>
+    <div class="right">
+      <span id="costLabel" title="Geschatte kosten">Est. Cost: $0.00</span>
+      <button class="icon" id="btnDownload" title="Download Chat">⬇️</button>
+      <button class="icon" id="btnTheme" title="Thema wisselen">👁️‍🗨️</button>
+      <button class="icon" id="btnSettings" title="Instellingen">⚙️</button>
     </div>
   </header>
 
-  <main class="chat" id="app">
-    <div id="chatWindow" class="chat-window" aria-live="polite"></div>
-    <form id="composer" class="composer" autocomplete="off">
-      <textarea id="input" class="prompt" rows="1" placeholder="Typ een bericht... (Shift+Enter = nieuwe regel)" aria-label="Bericht invoer"></textarea>
-      <button id="sendBtn" class="send-btn" type="submit" title="Versturen">Versturen</button>
-    </form>
+  <main class="container">
+    <section id="chat" class="chat"></section>
   </main>
 
-  <div id="settingsModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
-    <div class="modal-backdrop" data-close="1"></div>
-    <div class="modal-card">
-      <div class="modal-header">
-        <h2 id="settingsTitle">Instellingen</h2>
-      </div>
-      <div class="modal-body">
-        <div class="field">
-          <label for="apiKey">API Key</label>
-          <input type="password" id="apiKey" placeholder="Voer je API Key in" autocomplete="off" />
-        </div>
-        <div class="field">
-          <label for="ghToken">GitHub Token</label>
-          <input type="password" id="ghToken" placeholder="Voer je GitHub Token in" autocomplete="off" />
-        </div>
-        <div class="field">
-          <label for="modelSelect">Model</label>
-          <select id="modelSelect">
-            <option value="gpt-4o">gpt-4o</option>
-            <option value="gpt-4o-mini">gpt-4o-mini</option>
-            <option value="gpt-5">gpt-5</option>
-            <option value="custom">custom</option>
-          </select>
-        </div>
-        <div class="field" id="customModelWrap" style="display:none">
-          <label for="customModel">Custom Model</label>
-          <input type="text" id="customModel" placeholder="bijv. my-org/special-model" />
-        </div>
-        <div class="field">
-          <label for="systemInstructions">System Instructions</label>
-          <textarea id="systemInstructions" rows="8" placeholder="Schrijf hier je system prompt / rol / richtlijnen..."></textarea>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button id="saveSettingsBtn" class="primary">💾 Opslaan & Sluiten</button>
+  <footer class="inputbar">
+    <div class="controls">
+      <label class="switch" title="Web Search">
+        <input type="checkbox" id="webToggle">
+        <span class="slider"></span>
+      </label>
+      <label for="webToggle" class="switch-label">🌐 Web Search</label>
+    </div>
+    <div class="composer">
+      <textarea id="promptInput" rows="1" placeholder="Schrijf je bericht... (Shift+Enter = nieuwe regel)"></textarea>
+      <div class="actions">
+        <button id="btnStop" class="btn danger" style="display:none">Stop</button>
+        <button id="btnSend" class="btn primary">Verzend</button>
       </div>
     </div>
-  </div>
+  </footer>
 
-  <script src="script.js" defer></script>
+  <dialog id="settingsModal">
+    <form method="dialog" id="settingsForm">
+      <h3>Instellingen</h3>
+
+      <fieldset>
+        <legend>API Keys</legend>
+        <label>OpenAI API Key
+          <input type="password" id="openaiKey" placeholder="sk-...">
+        </label>
+        <label>GitHub Token
+          <input type="password" id="githubToken" placeholder="ghp_...">
+        </label>
+        <label>Tavily Search API Key
+          <input type="password" id="tavilyKey" placeholder="tvly-...">
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Model</legend>
+        <label>Keuze
+          <select id="modelSelect">
+            <option value="gpt-5">gpt-5</option>
+            <option value="gpt-5-mini">gpt-5-mini</option>
+            <option value="gpt-4o">gpt-4o</option>
+            <option value="o1-preview">o1-preview</option>
+            <option value="custom">custom</option>
+          </select>
+        </label>
+        <label id="customModelWrap" style="display:none">Custom ID
+          <input type="text" id="customModel" placeholder="bijv. my-org/supra-model-1">
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Persona</legend>
+        <textarea id="persona" rows="5" placeholder="System Instructions (rol, toon, richtlijnen)..."></textarea>
+      </fieldset>
+
+      <div class="modal-actions">
+        <button type="button" id="btnSave" class="btn primary">💾 Opslaan (Force)</button>
+        <button type="button" id="btnFactoryReset" class="btn danger">⚠️ Factory Reset</button>
+        <button value="cancel" class="btn">Sluiten</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="script.js"></script>
 </body>
 </html>
