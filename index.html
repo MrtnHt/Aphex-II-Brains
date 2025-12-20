@@ -1,73 +1,78 @@
 <!doctype html>
-<html lang="nl">
+<html lang='nl'>
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Hybride Interface</title>
-  <!-- Tailwind for glass mode utility classes -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Fira Code for matrix/monospace mode -->
-  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <meta charset='utf-8'>
+  <meta name='viewport' content='width=device-width,initial-scale=1'>
+  <title>Master Build</title>
+  <link rel='stylesheet' href='style.css'>
 </head>
-<body class="theme-matrix">
-  <div id="app" class="min-h-screen flex flex-col">
-    <header class="app-header flex items-center justify-between p-3">
-      <div class="flex items-center space-x-3">
-        <h1 class="app-title font-bold text-lg">Hybride Interface</h1>
+<body class='theme-glass'>
+  <header class='app-header'>
+    <div class='left'>
+      <h1 id='app-title'>Master Build <span id='app-status'>— Ready</span></h1>
+    </div>
+    <div class='right'>
+      <button id='theme-btn' class='icon-btn' title='Toggle Theme'>👁️‍🗨️ Theme</button>
+      <button id='clear-btn' class='icon-btn' title='Clear Chat'>🗑️ Wis</button>
+      <button id='config-btn' class='icon-btn' title='Settings'>⚙️ Config</button>
+    </div>
+  </header>
+
+  <main class='app-main'>
+    <div id='chat' class='chat-area' aria-live='polite'></div>
+  </main>
+
+  <footer id='input-area' class='input-area'>
+    <textarea id='user-input' class='user-input' placeholder='Typ je bericht... (Shift+Enter voor nieuwe regel)' rows='1'></textarea>
+    <div class='input-actions'>
+      <button id='send-btn' class='primary'>Verzend</button>
+      <button id='stop-btn' class='stop hidden'>Stop</button>
+    </div>
+  </footer>
+
+  <div id='settings-modal' class='modal hidden' role='dialog' aria-modal='true'>
+    <div class='modal-backdrop'></div>
+    <div class='modal-content'>
+      <h2>Instellingen</h2>
+      <div class='field'>
+        <label>OpenAI API Key
+          <input id='openai-key' type='password' placeholder='sk-...'>
+        </label>
       </div>
-
-      <div class="flex items-center space-x-2">
-        <button id="settingsBtn" aria-label="Open settings" class="settings-btn p-2 rounded">⚙️</button>
-        <button id="switchThemeBtn" aria-label="Switch Theme" class="switch-btn p-2 rounded">👁️‍🗨️ Switch Theme</button>
+      <div class='field'>
+        <label>GitHub Token
+          <input id='github-token' type='password' placeholder='ghp_...'>
+        </label>
       </div>
-    </header>
-
-    <main class="flex-1 flex overflow-hidden">
-      <!-- Sidebar -->
-      <aside id="sidebar" class="sidebar w-72 border-r p-4 overflow-auto">
-        <div class="sidebar-inner">
-          <h2 class="mb-2">Menu</h2>
-          <ul class="menu-list">
-            <li>• Home</li>
-            <li>• Projects</li>
-            <li>• Logs</li>
-            <li>• Settings</li>
-          </ul>
-        </div>
-      </aside>
-
-      <!-- Chat area -->
-      <section class="flex-1 p-4 flex flex-col">
-        <div id="messages" class="messages flex-1 overflow-auto mb-4 p-3 rounded">
-          <!-- Chat messages appended here -->
-        </div>
-
-        <form id="chatForm" class="chat-form flex space-x-2" autocomplete="off">
-          <input id="messageInput" name="message" type="text" placeholder="Zeg iets..." class="message-input flex-1 p-3 rounded" />
-          <button type="submit" class="send-btn px-4 py-3 rounded">Send</button>
-        </form>
-      </section>
-    </main>
-  </div>
-
-  <!-- Settings Modal -->
-  <div id="settingsModal" class="settings-modal hidden" role="dialog" aria-modal="true">
-    <div class="modal-inner">
-      <h3>API Keys</h3>
-      <label for="openaiKeyInput">OpenAI Key</label>
-      <input id="openaiKeyInput" type="password" placeholder="sk-..." />
-
-      <label for="githubKeyInput">GitHub Key (optioneel)</label>
-      <input id="githubKeyInput" type="password" placeholder="ghp_..." />
-
-      <div class="modal-actions">
-        <button id="saveKeysBtn" class="save-btn">Save</button>
-        <button id="closeSettingsBtn" class="close-btn">Close</button>
+      <div class='field'>
+        <label>Model selectie
+          <select id='model-select'>
+            <option value='gpt-4o'>gpt-4o</option>
+            <option value='gpt-4o-mini'>gpt-4o-mini</option>
+            <option value='gpt-5'>gpt-5</option>
+            <option value='gpt-5-mini'>gpt-5-mini</option>
+            <option value='o1-preview'>o1-preview</option>
+            <option value='custom'>custom</option>
+          </select>
+        </label>
+      </div>
+      <div class='field hidden' id='custom-model-wrap'>
+        <label>Custom model naam
+          <input id='custom-model' type='text' placeholder='vul je model id in'>
+        </label>
+      </div>
+      <div class='field'>
+        <label>Systeem Instructies
+          <textarea id='system-instructions' rows='6' placeholder='Persona / gedragsregels voor de AI'></textarea>
+        </label>
+      </div>
+      <div class='modal-actions'>
+        <button id='save-settings' class='primary'>Opslaan</button>
+        <button id='close-settings'>Sluiten</button>
       </div>
     </div>
   </div>
 
-  <script src="script.js"></script>
+  <script src='script.js'></script>
 </body>
 </html>
