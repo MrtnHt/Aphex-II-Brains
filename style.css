@@ -1,63 +1,129 @@
-/* Matrix / Glass theme */
-:root{
-  --bg-1: #07140f;
-  --bg-2: #05130e;
-  --glass-bg: rgba(255,255,255,0.04);
-  --accent: #00ff88;
-  --muted: rgba(255,255,255,0.6);
-  --panel: rgba(0,0,0,0.35);
+/* Basis layout */
+:root {
+  --bg: #0f1220;
+  --fg: #eaeefb;
+  --muted: #9aa4bf;
+  --primary: #2d7cff;
+  --primary-700: #1f5fd1;
+  --danger: #e74c3c;
+  --danger-700: #c0392b;
+  --panel: #151935;
+  --border: #2a3158;
 }
-html,body{height:100%;}
-body{
-  margin:0;
-  font-family: Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
-  background: radial-gradient(ellipse at center, rgba(0,255,136,0.02) 0%, rgba(0,0,0,0.6) 60%), linear-gradient(180deg,var(--bg-1),var(--bg-2));
-  color:#e6fff1;
-  -webkit-font-smoothing:antialiased;
-  -moz-osx-font-smoothing:grayscale;
+
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  font-family: -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--fg);
 }
-.topbar{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:12px 18px;
-  background: linear-gradient(90deg, rgba(0,0,0,0.25), rgba(0,0,0,0.12));
-  backdrop-filter: blur(6px);
-  box-shadow: 0 1px 0 rgba(0,0,0,0.35) inset;
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  background: #0c1022;
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
-.brand{font-weight:700;letter-spacing:0.4px;color:var(--accent)}
-.btn{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted);padding:8px 12px;border-radius:8px;cursor:pointer}
-.btn.primary{background:linear-gradient(90deg, rgba(0,255,136,0.08), rgba(0,255,136,0.04));border-color:rgba(0,255,136,0.18);color:#dfffe8}
-.container{display:flex;justify-content:center;align-items:flex-start;padding:24px}
-.chat{width:820px;max-width:calc(100% - 40px);min-height:60vh;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:14px;padding:18px;box-shadow:0 10px 30px rgba(0,0,0,0.6);backdrop-filter: blur(8px);border:1px solid rgba(255,255,255,0.03)}
-.messages{max-height:60vh;overflow:auto;padding:8px 6px 16px}
-.message{padding:10px 12px;border-radius:10px;margin:8px 0;max-width:85%;word-break:break-word;overflow-wrap:anywhere}
-.message.user{background:linear-gradient(90deg, rgba(0,255,136,0.06), rgba(0,255,136,0.02));align-self:flex-end;margin-left:auto;color:#e6ffe9}
-.message.assistant{background:rgba(0,0,0,0.28);color:var(--muted)}
-.composer{display:flex;gap:8px;border-top:1px solid rgba(255,255,255,0.02);padding-top:12px;margin-top:8px}
-.composer input[type="text"]{flex:1;padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:inherit}
+.brand { font-weight: 700; letter-spacing: 0.3px; }
+
+.content { padding: 24px 16px; max-width: 900px; margin: 0 auto; }
+
+/* Knoppen */
+.btn {
+  appearance: none;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.02s ease, background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  user-select: none;
+}
+.btn:active { transform: translateY(1px); }
+.btn:hover { filter: brightness(1.05); }
+
+.btn-ghost { background: transparent; color: var(--muted); border-color: var(--border); }
+.btn-ghost:hover { color: var(--fg); }
+
+.btn-primary { background: var(--primary); color: #fff; }
+.btn-primary:hover { background: var(--primary-700); }
+
+.btn-danger { background: var(--danger); color: #fff; }
+.btn-danger:hover { background: var(--danger-700); }
 
 /* Modal */
-.modal{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none}
-.modal.open{pointer-events:auto}
-.modal-backdrop{position:absolute;inset:0;background:linear-gradient(180deg, rgba(0,0,0,0.6), rgba(0,0,0,0.7));backdrop-filter: blur(4px)}
-.modal-card{position:relative;z-index:2;width:420px;max-width:92%;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:12px;padding:16px;border:1px solid rgba(255,255,255,0.03);box-shadow:0 15px 40px rgba(0,0,0,0.75)}
-.modal-header h2{margin:0 0 8px 0;color:var(--accent)}
-.modal-body{display:flex;flex-direction:column;gap:8px}
-.modal-body label{font-size:13px;color:var(--muted)}
-.modal-body input{padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:var(--glass-bg);color:inherit}
-.modal-footer{display:flex;justify-content:flex-end;gap:8px;margin-top:12px}
-.hint{font-size:12px;color:rgba(255,255,255,0.5)}
-
-/* Mobile optimisaties */
-@media (max-width:600px){
-  .chat{width:100%;min-height:70vh;padding:12px;border-radius:10px}
-  .message{font-size:15px}
-  .topbar{padding:10px}
-  /* Mobile word-break patch: houd lange keys en hashes breekbaar */
-  .message, .modal-body input, .composer input{word-break:break-word;overflow-wrap:anywhere}
+.modal {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: 999999; /* Hoge z-index zodat niets blokkeert */
 }
 
-/* extra polish */
-::-webkit-scrollbar{width:10px;height:10px}
-::-webkit-scrollbar-thumb{background:rgba(0,255,136,0.08);border-radius:8px}
+.modal-content {
+  width: min(560px, 92vw);
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.45);
+  overflow: hidden;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.modal-body {
+  display: grid;
+  gap: 10px;
+  padding: 16px;
+}
+
+.modal-body label {
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+/* Input velden: wit met zwarte tekst */
+input[type="text"] {
+  width: 100%;
+  background: #ffffff; /* wit */
+  color: #000000; /* zwart */
+  border: 1px solid #cfd6ee;
+  border-radius: 8px;
+  padding: 10px 12px;
+  outline: none;
+}
+input[type="text"]:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(45,124,255,0.25);
+}
+
+.modal-footer {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  padding: 16px;
+  border-top: 1px solid var(--border);
+}
+
+/* Zorg dat knoppen duidelijk aanklikbaar zijn op touch */
+.btn, .btn * { touch-action: manipulation; }
+
+/* Toegankelijkheid: grotere klikzones */
+.open-settings { padding: 10px 14px; }
+.close-modal { padding: 8px 10px; }
